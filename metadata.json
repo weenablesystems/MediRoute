@@ -1,0 +1,5 @@
+{
+  "name": "⚕️MediRoute™",
+  "description": "Regulated last-mile pharmaceutical logistics platform in Paarl, South Africa. Powered by 🌐SA-iLabs™ and Emma-i™.",
+  "requestFramePermissions": ["geolocation", "camera"]
+}

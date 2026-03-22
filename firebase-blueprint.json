@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the MediRoute platform.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the user." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "phone": { "type": "string", "description": "The user's phone number." },
+        "address": { "type": "string", "description": "The user's address." },
+        "zone": { "type": "string", "description": "The user's delivery zone." },
+        "role": { "type": "string", "enum": ["patient", "rider", "admin", "pharmacy"], "description": "The user's role." },
+        "isBoarded": { "type": "boolean", "description": "Whether the user has completed onboarding." },
+        "isAvailable": { "type": "boolean", "description": "Whether the rider is currently available for orders." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user was created." }
+      },
+      "required": ["uid", "email", "role", "isBoarded"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A prescription collection and delivery order.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the order." },
+        "patientId": { "type": "string", "description": "The ID of the patient." },
+        "patientName": { "type": "string", "description": "The name of the patient." },
+        "patientPhone": { "type": "string", "description": "The phone number of the patient." },
+        "medicationName": { "type": "string", "description": "The name of the medication." },
+        "quantity": { "type": "string", "description": "The quantity of the medication." },
+        "pharmacyId": { "type": "string", "description": "The ID of the pharmacy." },
+        "pharmacyName": { "type": "string", "description": "The name of the pharmacy." },
+        "pharmacyAddress": { "type": "string", "description": "The address of the pharmacy." },
+        "deliveryAddress": { "type": "string", "description": "The delivery address." },
+        "deliveryZone": { "type": "string", "description": "The delivery zone." },
+        "prescriptionDetails": { "type": "string", "description": "Details about the prescription." },
+        "status": { "type": "string", "enum": ["pending", "assigned", "picked-up", "in-transit", "delivered", "cancelled"], "description": "The current status of the order." },
+        "riderId": { "type": "string", "description": "The ID of the assigned rider." },
+        "riderName": { "type": "string", "description": "The name of the assigned rider." },
+        "consentGiven": { "type": "boolean", "description": "Whether the patient gave consent." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the order was created." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the order was last updated." }
+      },
+      "required": ["patientId", "pharmacyName", "deliveryAddress", "deliveryZone", "status", "consentGiven", "medicationName", "quantity"]
+    },
+    "Pharmacy": {
+      "title": "Pharmacy",
+      "description": "A partner pharmacy.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the pharmacy." },
+        "name": { "type": "string", "description": "The name of the pharmacy." },
+        "address": { "type": "string", "description": "The address of the pharmacy." },
+        "phone": { "type": "string", "description": "The phone number of the pharmacy." },
+        "email": { "type": "string", "format": "email", "description": "The contact email." },
+        "status": { "type": "string", "enum": ["pending", "active", "inactive"], "description": "The status of the partnership." }
+      },
+      "required": ["name", "address", "phone", "email", "status"]
+    },
+    "Zone": {
+      "title": "Zone",
+      "description": "A delivery zone.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the zone." },
+        "name": { "type": "string", "description": "The name of the zone." },
+        "description": { "type": "string", "description": "The description of the zone." },
+        "riderCapacity": { "type": "number", "description": "The rider capacity of the zone." }
+      },
+      "required": ["name", "riderCapacity"]
+    },
+    "RiderLocation": {
+      "title": "RiderLocation",
+      "description": "Real-time location of a rider.",
+      "type": "object",
+      "properties": {
+        "riderId": { "type": "string", "description": "The ID of the rider." },
+        "latitude": { "type": "number", "description": "The current latitude." },
+        "longitude": { "type": "number", "description": "The current longitude." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the location was last updated." }
+      },
+      "required": ["riderId", "latitude", "longitude", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "User profiles." },
+    "/orders/{orderId}": { "schema": "Order", "description": "Delivery orders." },
+    "/pharmacies/{pharmacyId}": { "schema": "Pharmacy", "description": "Partner pharmacies." },
+    "/zones/{zoneId}": { "schema": "Zone", "description": "Delivery zones." },
+    "/riderLocations/{riderId}": { "schema": "RiderLocation", "description": "Real-time rider locations." }
+  }
+}
